@@ -7,7 +7,7 @@ def call(String useSonar, String sonarqubeIP, String sonarqubePort) {
                 steps.waitUntil {
                     steps.sh(script: "nc -z ${sonarqubeIP} ${sonarqubePort}", returnStatus: true) == 0
                 }
-                steps.echo 'Sonar OK'
+                steps.echo 'Sonarqube is reachable'
             } catch (e) {
                 steps.error "Sonar failed: ${e}"
             }

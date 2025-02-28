@@ -1,4 +1,5 @@
 def call(String githubURL, String gitCredentials) { //Added optional String type hints.
+    echo 'started the precondition check for check that it has right github credentials'
     def gitURL = githubURL.replace('https://', '')
     echo 'Checking GitHub repository availability...'
     // Use git ls-remote with credentials from Jenkins credentials

@@ -1,20 +1,16 @@
-def call(boolean useSonar, String sonarqubeIp, String sonarqubePort) {
-    if (useSonar) {
-        steps.echo "SonarQube IP: ${sonarqubeIp}, Port: ${sonarqubePort}"
-        netCheck(sonarqubeIp, sonarqubePort, 'SonarQube')
-    }
-}
-
-def netCheck(String host, String port, String serviceName) {
+def call(boolean useSonar, String sonarqubeIP, String sonarqubePort) {
     def steps = this.steps
-    timeout(time: 10, unit: 'SECONDS') {
-        try {
-            steps.waitUntil {
-                steps.sh(script: "nc -z ${host} ${port}", returnStatus: true) == 0
+    if (useSonar) { // Directly use boolean value
+        steps.echo "Checking Sonar... ${sonarqubeIP}:${sonarqubePort}"
+        steps.timeout(time: 10, unit: 'SECONDS') {
+            try {
+                steps.waitUntil {
+                    steps.sh(script: "nc -z ${sonarqubeIP} ${sonarqubePort}", returnStatus: true) == 0
+                }
+                steps.echo 'Sonar OK'
+            } catch (e) {
+                steps.error "Sonar failed: ${e}"
             }
-            steps.echo "${serviceName} is reachable at ${host}:${port}"
-        } catch (e) {
-            steps.error "${serviceName} is not reachable at ${host}:${port}. Error: ${e.getMessage()}"
         }
     }
 }

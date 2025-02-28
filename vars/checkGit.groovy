@@ -1,8 +1,8 @@
-def call(String githubURL, String gitCreds) { //Added optional String type hints.
+def call(String githubURL, String gitCredentials) { //Added optional String type hints.
     def gitURL = githubURL.replace('https://', '')
     echo 'Checking GitHub repository availability...'
     // Use git ls-remote with credentials from Jenkins credentials
-    this.steps.withCredentials([this.steps.usernamePassword(credentialsId: gitCreds, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+    this.steps.withCredentials([this.steps.usernamePassword(credentialsId: gitCredentials, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
         def encodedUsername = java.net.URLEncoder.encode(USERNAME, 'UTF-8')
         def encodedPassword = java.net.URLEncoder.encode(PASSWORD, 'UTF-8')
         sh """

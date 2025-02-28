@@ -1,15 +1,8 @@
 def call(boolean useSonar, String sonarqubeIP, String sonarqubePort) {
-    if (useSonar) { // Directly use boolean value
-        steps.echo "Checking Sonar... ${sonarqubeIP}:${sonarqubePort}"
-        steps.timeout(time: 10, unit: 'SECONDS') {
-            try {
-                steps.waitUntil {
-                    steps.sh(script: "nc -z ${sonarqubeIP} ${sonarqubePort}", returnStatus: true) == 0
-                }
-                steps.echo 'Sonar OK'
-            } catch (e) {
-                steps.error "Sonar failed: ${e}"
-            }
-        }
+    if (useSonar == 'true') {
+        // Check SonarQube Server availability
+        echo "SonarQube IP: ${env.sonarqube_ip}, Port: ${env.sonarqube_port}"
+        netCheck(env.sonarqube_ip, env.sonarqube_port, 'SonarQube')
+        echo "Sonarqube is reachable"
     }
 }

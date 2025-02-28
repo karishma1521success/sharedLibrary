@@ -1,6 +1,6 @@
 def call(boolean useSonar, String sonarqubeIP, String sonarqubePort) {
     def steps = this.steps
-    if (useSonar) { // Directly use boolean value
+    if (useSonar == 'true') { // Directly use boolean value
         steps.echo "Checking Sonar... ${sonarqubeIP}:${sonarqubePort}"
         steps.timeout(time: 10, unit: 'SECONDS') {
             try {

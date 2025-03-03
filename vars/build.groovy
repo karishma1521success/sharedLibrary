@@ -1,4 +1,3 @@
-
 def call(String projectType, String prodName) {
     def steps = this.steps
     def env = this.env
@@ -36,10 +35,7 @@ def call(String projectType, String prodName) {
 
         ls -lah ${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/
     """
-
-    this.getName("${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/*.war")
-
-    String filename = steps.sh(script: "ls ${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/${env.warFileName}", returnStdout: true).trim()
-    env.appName = steps.sh(script: """basename ${filename} | sed 's/##.*//'""", returnStdout: true).trim()
-    steps.echo "Application Name: ${env.appName}"
+    String namePath = "${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/*.war"
+    def warFileName = this.getName(namePath)
+    return warFileName   //returning warFileName value
 }

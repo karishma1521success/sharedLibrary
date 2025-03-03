@@ -22,7 +22,7 @@ def call(String projectType, String prodName) {
     }
 
     steps.sh """
-        String warFile = \$(ls ${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/*.war | head -n 1)
+        String warFile = steps.sh(script: "ls ${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/*.war | head -n 1", returnStdout: true).trim()
         steps.echo "Source file: \$warFile"
         steps.echo "Destination file: ${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/${prodName}.war"
 

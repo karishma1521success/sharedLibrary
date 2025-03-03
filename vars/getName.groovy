@@ -3,4 +3,6 @@ def call(String namePath) {
     steps.echo "New WAR file: ${warFileName}"
     // env.NEW_WAR_FILE = warFileName
     steps.echo "Value for warFileName -> $warFileName"
+
+    return warFileName   //return the value of warFileName
 }

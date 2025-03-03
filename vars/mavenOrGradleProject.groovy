@@ -24,4 +24,3 @@ def call() {
     steps.echo "Project type within shared library: ${projectType}" // Verification
     return projectType; // Return the projectType
 }
-}

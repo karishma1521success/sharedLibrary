@@ -1,3 +1,5 @@
+#!/usr/bin/groovy
+
 def call(String projectType, String prodName) {
     def steps = this.steps
     def env = this.env
@@ -21,21 +23,24 @@ def call(String projectType, String prodName) {
         }
     }
 
-    steps.sh """
-        String warFile = steps.sh(script: "ls ${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/*.war | head -n 1", returnStdout: true).trim()
-        steps.echo "Source file: \$warFile"
-        steps.echo "Destination file: ${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/${prodName}.war"
+    String warFile = steps.sh(script: "ls ${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/*.war | head -n 1", returnStdout: true).trim()
 
-        if [ "\$warFile" != "${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/${prodName}.war" ]; then
-            mv \$warFile ${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/${prodName}.war
-            steps.echo "File renamed successfully."
+    steps.sh """
+        echo "Source file: ${warFile}"
+        echo "Destination file: ${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/${prodName}.war"
+
+        if [ "${warFile}" != "${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/${prodName}.war" ]; then
+            mv "${warFile}" "${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/${prodName}.war"
+            echo "File renamed successfully."
         else
-            steps.echo "File name is perfect, no need to change"
+            echo "File name is perfect, no need to change"
         fi
 
         ls -lah ${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/
     """
+
     String namePath = "${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/*.war"
-    def warFileName = this.getName(namePath)
-    return warFileName   //returning warFileName value
+    String warFileName = this.getName(namePath)
+
+    return warFileName; //returning warFileName value from the environment.
 }

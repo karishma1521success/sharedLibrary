@@ -7,9 +7,9 @@ def call() {
         javac -version
     '''
     steps.echo 'check Build Tool (Gradle or Maven....... )'
-    projectType = 'Maven'
+    env.projectType = 'Maven'
     if (steps.fileExists('build.gradle')) {
-        projectType = 'Gradle'
+        env.projectType = 'Gradle'
         steps.echo 'Gradle Project Detected'
         steps.sh 'gradle -version'
     }else if (steps.fileExists('pom.xml')) {
@@ -19,7 +19,5 @@ def call() {
         steps.error 'No build file found! Not a valid Gradle or Maven project.'
     }
 
-    env.projectType = projectType // Explicitly set env.projectType
-
-    steps.echo "Project type within shared library: ${projectType}" // Verification
+    steps.echo "Project type within shared library: ${env.projectType}" // Verification
 }

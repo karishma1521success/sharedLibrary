@@ -25,7 +25,8 @@ def sendEmail(String subject, String body) {
     steps.emailext subject: subject,
         body: body,
         attachLog: true,
-        to: "${env.RECIPIENTS_NAME}"
+        to: "${env.RECIPIENTS_NAME[0]}"
+        cc: "${env.RECIPIENTS_NAME[1]}"
 }
 
 def enableDisableJobs() {

@@ -1,5 +1,3 @@
-#!/usr/bin/groovy
-
 def call(String projectType, String prodName) {
     def steps = this.steps
     def env = this.env
@@ -40,7 +38,10 @@ def call(String projectType, String prodName) {
     """
 
     String namePath = "${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/*.war"
-    String warFileName = this.getName(namePath)
-
-    return warFileName; //returning warFileName value from the environment.
+    String warFileName = this.getName(namePath)  //getting the value of warfileName
+    echo "warFileName is ${warFileName}"
+    String filename = "${env.JENKINS_HOME}/workspace/${env.JOB_NAME}/${warPath}/${warFileName}"
+    String appName = steps.sh(script: """basename ${filename} | sed 's/##.*//'""", returnStdout:true).trim()
+    echo "Application Name: ${appName}"
+    return [warFileName, appName] //returning the list contains warFileName and appName value
 }

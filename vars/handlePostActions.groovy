@@ -1,8 +1,6 @@
-def call() {
+def call(String buildResult) {
     def steps = this.steps 
     def env = this.env              //Fetching the jenkins pipeline environment variables.
-
-    def buildResult = steps.currentBuild.currentResult
 
     if (buildResult == 'FAILURE') {
         sendEmail(env.FAIL_SUBJECT, env.FAIL_CONTENT)
